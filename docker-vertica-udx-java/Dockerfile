@@ -98,6 +98,7 @@ ENV LANG en_US.UTF-8
 ENV TZ UTC
 ENV PATH "$PATH:/opt/vertica/bin:/opt/vertica/sbin"
 ENV DEBIAN_FRONTEND noninteractive
+# ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
 COPY ./packages/init.d.functions /etc/rc.d/init.d/functions
 
@@ -127,7 +128,7 @@ RUN set -x \
   openssh-server \
   openssl \
   sudo \
-  openjdk-8-jre \
+  openjdk-8-jre-headless \
   && rm -rf /var/lib/apt/lists/* \
   # Make the "en_US.UTF-8" locale so vertica will be utf-8 enabled by default
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
@@ -137,7 +138,9 @@ RUN set -x \
   && /usr/sbin/useradd -r -m -s /bin/bash -g verticadba --uid ${DBADMIN_UID} dbadmin \
   # Allow passwordless sudo access from dbadmin
   && echo "dbadmin ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers \
-  && echo "dbadmin -       nofile  65536" >> /etc/security/limits.conf 
+  && echo "dbadmin -       nofile  65536" >> /etc/security/limits.conf \
+  && echo "export JAVA_HOME=/usr" >> /home/dbadmin/.bashrc
+  # && echo "JAVA_HOME=/usr" >> /etc/environment
   
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 

@@ -1,7 +1,7 @@
 VERTICA_RPM?=vertica-x86_64.RHEL6.latest.rpm
 BUILDER_OS_VERSION?=7.9.2009
 BASE_OS_VERSION?=focal-20220316
-VERTICA_IMG?=vertica-udx-java-k8s
+VERTICA_IMG?=vertica-udx-java-k8s:1.6.2
 MINIMAL_VERTICA_IMG?=
 VERTICA_VERSION?=$(shell rpm --nosignature -qp --queryformat '%{VERSION}-%{RELEASE}' packages/$(VERTICA_RPM))
 

@@ -134,7 +134,7 @@ func UpdateAdmintoolsCmd(passwd string, cmd ...string) []string {
 	// the actual limits for the pod/container.  So we need this extra bit to
 	// ensure we always run with the pod limits.  This ensures the limits are
 	// the same across all vertica nodes.
-	prefix := []string{"sudo", "su", "dbadmin", "--", "/opt/vertica/bin/admintools"}
+	prefix := []string{"sudo", "-E", "su", "-l", "dbadmin", "--", "/opt/vertica/bin/admintools"}
 	cmd = append(prefix, cmd...)
 	if passwd == "" {
 		return cmd
